@@ -9,8 +9,8 @@ Welcome to my personal website!
 
 ## Links
 - [GitHub](https://github.com/BeBhupendra)
-- [Instagram]([instagram.com/bebhupendra](https://www.instagram.com/bebhupendra/))
-- [Youtube]([yputube.com/bebhupendra](https://www.youtube.com/channel/UCVXbBv1NRPFtPrGkVzjA00g))
+- [Instagram](https://www.instagram.com/bebhupendra/)
+- [Youtube](https://www.youtube.com/channel/UCVXbBv1NRPFtPrGkVzjA00g)
 - [LinkedIn](https://www.linkedin.com/in/bebhupendra/)
 - [X-Former Twitter](https://x.com/be_bhupendra)
 - [Spotify](https://open.spotify.com/artist/1DMvy98N4qBEdgdpTAVhhK)
