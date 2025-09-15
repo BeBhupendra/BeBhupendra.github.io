@@ -1,5 +1,3 @@
-# Bhupendra Singh Kanyal
-
 Welcome to my personal website!
 
 ## About Me
