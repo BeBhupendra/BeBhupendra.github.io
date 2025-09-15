@@ -9,4 +9,5 @@ Welcome to my personal website!
 
 ## Links
 - [GitHub](https://github.com/BeBhupendra)
-- 
+- [Instagram](instagram.com/bebhupendra)
+- [Youtube](yputube.com/bebhupendra)
