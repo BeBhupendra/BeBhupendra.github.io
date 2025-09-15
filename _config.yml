@@ -1,0 +1,9 @@
+remote_theme: jekyll/minima
+plugins:
+  - jekyll-remote-theme
+
+minima:
+  skin: dark
+
+title: Bhupendra Singh Kanyal
+description: Welcome to my professional site!
