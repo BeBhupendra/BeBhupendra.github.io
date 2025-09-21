@@ -8,22 +8,27 @@
   <meta name="author" content="Bhupendra Singh Kanyal" />
 
   <!-- Fonts & Icons -->
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;800&display=swap" rel="stylesheet" />
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet" />
 
   <style>
-    /* Color & font variables - Canva inspired theme */
+    /* Color & font variables - Dark gradient theme */
     :root {
-      --color-bg: #FFFFFF;
-      --color-text-primary: #1A1A1A;
-      --color-text-secondary: #7F8C8D;
-      --color-accent: #008080;    /* Teal */
-      --color-accent-secondary: #FF7043; /* Warm orange */
-      --color-border: #BDC3C7;
+      --color-dark: #0a0a0f;
+      --color-surface: #1a1a24;
+      --color-surface-light: #2a2a38;
+      --color-light: #ffffff;
+      --color-text-secondary: #b8b8c0;
+      --pink-primary: #e91e63;
+      --pink-secondary: #ad1457;
+      --purple-primary: #9c27b0;
+      --purple-secondary: #673ab7;
+      --gradient-primary: linear-gradient(135deg, #e91e63 0%, #9c27b0 50%, #673ab7 100%);
+      --gradient-secondary: linear-gradient(135deg, #ad1457 0%, #7b1fa2 100%);
       --font-primary: 'Poppins', sans-serif;
-      --border-radius: 12px;
-      --transition: all 0.3s ease;
-      --box-shadow: 0 6px 20px rgba(0,0,0,0.07);
+      --border-radius: 20px;
+      --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      --box-shadow: 0 10px 40px rgba(233,30,99,0.3);
     }
 
     /* Reset & Base */
@@ -35,25 +40,25 @@
     }
     body {
       font-family: var(--font-primary);
-      background: var(--color-bg);
-      color: var(--color-text-primary);
+      background: var(--color-dark);
+      color: var(--color-light);
       line-height: 1.6;
       min-height: 100vh;
       overflow-x: hidden;
     }
     a {
-      color: var(--color-accent);
+      color: var(--pink-primary);
       text-decoration: none;
       transition: var(--transition);
     }
     a:hover, a:focus {
-      color: var(--color-accent-secondary);
+      color: var(--color-light);
       outline: none;
     }
 
     /* Container */
     .container {
-      max-width: 1100px;
+      max-width: 1200px;
       margin: 0 auto;
       padding: 1rem 2rem;
     }
@@ -64,11 +69,11 @@
       top: 0;
       left: 0;
       width: 100%;
-      background: var(--color-bg);
-      border-bottom: 1px solid var(--color-border);
-      box-shadow: var(--box-shadow);
+      background: rgba(10,10,15,0.95);
+      border-bottom: 1px solid var(--color-surface);
+      box-shadow: 0 4px 20px rgba(0,0,0,0.5);
       z-index: 1000;
-      backdrop-filter: saturate(180%) blur(10px);
+      backdrop-filter: saturate(180%) blur(20px);
     }
     nav.container {
       display: flex;
@@ -77,9 +82,12 @@
       padding: 1rem 0;
     }
     .nav-logo {
-      font-weight: 700;
-      font-size: 1.5rem;
-      color: var(--color-accent);
+      font-weight: 800;
+      font-size: 1.6rem;
+      background: var(--gradient-primary);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
       display: flex;
       align-items: center;
       gap: 0.5rem;
@@ -88,8 +96,9 @@
       animation: fadeSlideIn 0.8s forwards 0.2s;
     }
     .nav-logo i {
-      color: var(--color-accent-secondary);
-      font-size: 1.8rem;
+      color: var(--pink-primary);
+      font-size: 2rem;
+      -webkit-text-fill-color: var(--pink-primary);
     }
     ul.nav-links {
       list-style: none;
@@ -103,6 +112,21 @@
       transform: translateY(-20px);
       animation: fadeSlideIn 0.8s forwards;
       animation-delay: calc(0.3s + var(--li-index) * 0.1s);
+      position: relative;
+    }
+    ul.nav-links li a::after {
+      content: '';
+      position: absolute;
+      bottom: -5px;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background: var(--gradient-primary);
+      transition: width 0.3s ease;
+    }
+    ul.nav-links li a:hover::after,
+    ul.nav-links li a:focus::after {
+      width: 100%;
     }
     ul.nav-links li:nth-child(1) a { --li-index: 0; }
     ul.nav-links li:nth-child(2) a { --li-index: 1; }
@@ -113,8 +137,20 @@
 
     ul.nav-links li a:hover,
     ul.nav-links li a:focus {
-      color: var(--color-accent);
+      color: var(--pink-primary);
       outline: none;
+    }
+
+    /* Animations on scroll: set baseline hidden */
+    .scroll-animate {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+    }
+    /* Visible state */
+    .scroll-animate.visible {
+      opacity: 1;
+      transform: translateY(0);
     }
 
     /* Hero Section */
@@ -124,423 +160,474 @@
       align-items: center;
       justify-content: center;
       padding-top: 5rem;
-      background: var(--color-bg);
-      color: var(--color-text-primary);
-      text-align: center;
-      flex-direction: column;
-      gap: 1.5rem;
-      padding-bottom: 4rem;
+      background: var(--color-dark);
+      position: relative;
       overflow: hidden;
+      text-align: center;
+    }
+    #home::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: var(--gradient-primary);
+      opacity: 0.1;
+      z-index: -1;
+    }
+    .hero-content {
+      max-width: 800px;
+      padding: 0 2rem;
+      margin: 0 auto;
     }
     #home img.profile-pic {
-      width: 180px;
-      height: 180px;
+      width: 200px;
+      height: 200px;
       border-radius: 50%;
-      border: 6px solid var(--color-accent);
+      background: var(--gradient-primary);
+      padding: 4px;
       box-shadow: var(--box-shadow);
       object-fit: cover;
-      background-color: var(--color-bg);
-      filter: drop-shadow(0 0 0.3rem var(--color-accent));
+      margin-bottom: 2rem;
+      filter: drop-shadow(0 0 0.1rem var(--pink-primary));
       opacity: 0;
       animation: fadeInScale 1s forwards 0.5s;
     }
     #home h1 {
-      font-size: 2.8rem;
+      font-size: 3.5rem;
       letter-spacing: 1px;
-      font-weight: 700;
-      margin-bottom: 0.5rem;
+      font-weight: 800;
+      margin-bottom: 1rem;
+      background: var(--gradient-primary);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      text-shadow: 0 0 30px rgba(233,30,99,0.6);
       opacity: 0;
       animation: fadeSlideIn 1s forwards 1s;
     }
     #home h2 {
       font-weight: 400;
-      font-size: 1.4rem;
+      font-size: 1.8rem;
       font-style: italic;
-      opacity: 0.9;
-      max-width: 600px;
-      margin: 0 auto;
-      min-height: 1.8em;
+      margin-bottom: 2rem;
+      min-height: 2em;
       white-space: nowrap;
-      border-right: 2px solid var(--color-accent-secondary);
+      border-right: 2px solid var(--pink-primary);
       overflow: hidden;
       width: 0;
-      animation: typing 4s steps(25) forwards 1.7s, blink-caret 0.75s step-end infinite alternate 5.7s;
-      color: var(--color-accent);
-      text-shadow: 0 0 8px var(--color-accent);
+      animation: typing 4s steps(32) forwards 1.7s, blink-caret 0.75s step-end infinite alternate 5.7s;
+      color: var(--color-light);
     }
     #home p.bio {
-      max-width: 650px;
-      margin: 0 auto;
-      line-height: 1.6;
+      max-width: 700px;
+      margin: 0 auto 2.5rem;
+      line-height: 1.7;
       font-weight: 300;
-      font-size: 1.05rem;
+      font-size: 1.1rem;
+      color: var(--color-text-secondary);
       opacity: 0;
       animation: fadeIn 1s forwards 3.3s;
-      color: var(--color-text-secondary);
     }
     #home .btn-group {
       display: flex;
-      gap: 1rem;
-      margin-top: 1.5rem;
-      flex-wrap: wrap;
+      gap: 1.5rem;
       justify-content: center;
+      flex-wrap: wrap;
       opacity: 0;
       animation: fadeIn 1s forwards 3.8s;
     }
     .btn {
-      background-color: var(--color-accent);
+      background: var(--gradient-primary);
       border: none;
-      padding: 0.9rem 2rem;
-      border-radius: var(--border-radius);
+      padding: 1rem 2.5rem;
+      border-radius: 50px;
       font-weight: 600;
       cursor: pointer;
       color: white;
       font-size: 1.1rem;
-      box-shadow: none;
-      transition: all 0.3s ease;
+      box-shadow: var(--box-shadow);
+      transition: var(--transition);
       display: inline-flex;
       align-items: center;
       gap: 0.5rem;
       user-select: none;
       text-decoration: none;
+      position: relative;
+      overflow: hidden;
     }
     .btn:hover,
     .btn:focus {
-      background-color: var(--color-accent-secondary);
       outline: none;
-      transform: translateY(-2px);
+      transform: translateY(-3px);
+      box-shadow: 0 15px 50px rgba(233,30,99,0.4);
     }
     .btn.secondary {
-      background-color: transparent;
-      border: 2px solid var(--color-accent);
-      color: var(--color-accent);
+      background: transparent;
+      border: 2px solid var(--pink-primary);
+      color: var(--pink-primary);
+      box-shadow: none;
     }
     .btn.secondary:hover, .btn.secondary:focus {
-      background-color: var(--color-accent-secondary);
-      border-color: var(--color-accent-secondary);
+      background: var(--gradient-primary);
+      border-color: transparent;
       color: white;
     }
 
     /* Section Titles */
     section {
-      padding: 5rem 0;
+      padding: 6rem 0;
       scroll-margin-top: 5rem;
     }
     h2.section-title {
-      font-size: 2.6rem;
-      font-weight: 700;
+      font-size: 3rem;
+      font-weight: 800;
       text-align: center;
       margin-bottom: 1rem;
-      color: var(--color-text-primary);
+      background: var(--gradient-primary);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
       opacity: 0;
       transform: translateY(30px);
-      animation: fadeSlideUp 0.8s forwards 0.5s;
+      transition: none;
     }
     p.section-subtitle {
       max-width: 600px;
-      margin: 0 auto 3rem;
+      margin: 0 auto 4rem;
       color: var(--color-text-secondary);
       text-align: center;
-      font-weight: 500;
-      font-size: 1.1rem;
-      line-height: 1.5;
+      font-weight: 400;
+      font-size: 1.2rem;
+      line-height: 1.6;
       opacity: 0;
       transform: translateY(30px);
-      animation: fadeSlideUp 0.8s forwards 0.7s;
+      transition: none;
     }
 
     /* About Section */
     #about {
-      background: var(--color-bg);
-      color: var(--color-text-primary);
+      background: var(--color-surface);
+      position: relative;
+    }
+    #about::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: var(--gradient-secondary);
+      opacity: 0.05;
+      pointer-events: none;
+      z-index: 0;
     }
     #about .about-content {
-      max-width: 900px;
+      max-width: 1000px;
       margin: 0 auto;
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 3rem;
+      gap: 4rem;
       align-items: center;
-      opacity: 0;
-      transform: translateY(30px);
-      animation: fadeSlideUp 1s forwards 1s;
+      position: relative;
+      z-index: 1;
     }
     #about img.about-photo {
-      width: 260px;
+      width: 100%;
+      max-width: 300px;
       border-radius: var(--border-radius);
       box-shadow: var(--box-shadow);
+      border: 3px solid transparent;
+      background: var(--gradient-primary);
+      padding: 3px;
     }
     #about .text {
-      font-size: 1rem;
-      color: var(--color-text-primary);
-      line-height: 1.7;
+      font-size: 1.1rem;
+      color: var(--color-light);
+      line-height: 1.8;
     }
     #about .text strong {
-      color: var(--color-accent);
+      color: var(--pink-primary);
     }
 
     /* Skills */
     .skills-list {
-      margin-top: 2rem;
+      margin-top: 2.5rem;
       display: flex;
       flex-wrap: wrap;
       gap: 1rem;
       justify-content: center;
-      opacity: 0;
-      transform: translateY(30px);
-      animation: fadeSlideUp 1s forwards 1.2s;
     }
     .skill {
-      background: var(--color-accent);
+      background: var(--gradient-primary);
       color: white;
-      padding: 0.6rem 1.2rem;
+      padding: 0.8rem 1.5rem;
       border-radius: 50px;
       font-weight: 600;
-      font-size: 0.9rem;
-      box-shadow: 0 6px 20px rgba(0,128,128,0.3);
+      font-size: 0.95rem;
+      box-shadow: 0 8px 25px rgba(233,30,99,0.3);
       user-select: none;
-      transition: background-color 0.3s ease;
+      transition: var(--transition);
+      position: relative;
+      overflow: hidden;
+      cursor: default;
     }
     .skill:hover {
-      background: var(--color-accent-secondary);
+      transform: translateY(-3px);
     }
 
     /* Projects Section */
     #portfolio .project-cards {
       display: grid;
-      gap: 2rem;
-      max-width: 1000px;
+      gap: 2.5rem;
+      max-width: 1200px;
       margin: 0 auto;
-      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-      opacity: 0;
-      transform: translateY(30px);
-      animation: fadeSlideUp 1s forwards 1.4s;
+      grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
     }
     .project-card {
-      background: #f8f9fa;
-      border: 1px solid var(--color-border);
-      box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+      background: var(--color-surface);
+      border: 1px solid var(--color-surface-light);
       border-radius: var(--border-radius);
-      color: var(--color-text-primary);
-      transition: transform 0.25s ease;
-      border-left: 6px solid var(--color-accent);
-      padding: 1.75rem 1.5rem;
-      display: flex;
-      flex-direction: column;
+      padding: 2.5rem 2rem;
+      position: relative;
+      overflow: hidden;
       cursor: default;
+      transition: var(--transition);
     }
-    .project-card:hover, .project-card:focus-visible {
-      transform: translateY(-4px);
-      border-left-color: var(--color-accent-secondary);
-      outline: none;
+    .project-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: var(--gradient-primary);
+    }
+    .project-card:hover {
+      transform: translateY(-8px);
+      box-shadow: var(--box-shadow);
     }
     .project-card h3 {
-      color: var(--color-accent);
-      margin-bottom: 0.8rem;
-      font-size: 1.3rem;
+      color: var(--pink-primary);
+      margin-bottom: 1rem;
+      font-size: 1.5rem;
+      font-weight: 700;
     }
     .project-description {
-      flex-grow: 1;
-      color: var(--color-text-primary);
-      font-size: 0.95rem;
-      margin-bottom: 1rem;
-      line-height: 1.5;
+      color: var(--color-light);
+      font-size: 1rem;
+      margin-bottom: 1.5rem;
+      line-height: 1.6;
     }
     .project-tags {
       display: flex;
       flex-wrap: wrap;
-      gap: 0.4rem;
-      margin-bottom: 1rem;
+      gap: 0.5rem;
+      margin-bottom: 1.5rem;
     }
     .project-tag {
-      background: var(--color-accent-secondary);
+      background: var(--gradient-secondary);
       color: white;
-      font-weight: 600;
-      font-size: 0.8rem;
-      padding: 0.3rem 0.8rem;
-      border-radius: 9999px;
+      font-weight: 500;
+      font-size: 0.85rem;
+      padding: 0.4rem 1rem;
+      border-radius: 20px;
       user-select: none;
-      box-shadow: 0 3px 15px rgba(255,112,67,0.3);
+      cursor: default;
     }
 
     /* Achievements Section */
     #achievements {
-      background: var(--color-bg);
-      color: var(--color-text-primary);
+      background: var(--color-surface);
+      position: relative;
+    }
+    #achievements::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: var(--gradient-primary);
+      opacity: 0.05;
+      pointer-events: none;
+      z-index: 0;
     }
     #achievements .achievement-list {
-      max-width: 900px;
+      max-width: 1200px;
       margin: 0 auto;
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 2rem;
-      opacity: 0;
-      transform: translateY(30px);
-      animation: fadeSlideUp 1s forwards 1.6s;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 2.5rem;
+      position: relative;
+      z-index: 1;
     }
     .achievement-card {
-      background: var(--color-accent);
+      background: var(--gradient-primary);
       border-radius: var(--border-radius);
-      padding: 1.5rem 1.25rem;
+      padding: 2rem 1.5rem;
       color: white;
-      box-shadow: 0 6px 20px rgba(0,128,128,0.4);
-      transition: transform 0.3s ease;
+      box-shadow: var(--box-shadow);
+      transition: var(--transition);
       cursor: default;
-      display: flex;
-      flex-direction: column;
-      gap: 0.6rem;
+      position: relative;
+      overflow: hidden;
     }
-    .achievement-card:hover, .achievement-card:focus-visible {
-      transform: translateY(-4px);
-      background: var(--color-accent-secondary);
-      outline: none;
+    .achievement-card:hover {
+      transform: translateY(-8px) scale(1.02);
+      box-shadow: 0 20px 50px rgba(233,30,99,0.6);
     }
     .achievement-card i {
-      font-size: 2.2rem;
-      margin-bottom: 0.7rem;
+      font-size: 2.5rem;
+      margin-bottom: 1rem;
     }
     .achievement-title {
       font-weight: 700;
-      font-size: 1.2rem;
+      font-size: 1.3rem;
+      margin-bottom: 0.5rem;
     }
     .achievement-date {
-      font-weight: 500;
+      font-weight: 400;
       font-size: 0.9rem;
       opacity: 0.9;
       font-style: italic;
+      margin-bottom: 1rem;
     }
     .achievement-desc {
-      flex-grow: 1;
       font-weight: 400;
-      font-size: 0.95rem;
+      font-size: 1rem;
+      line-height: 1.5;
     }
 
     /* Social Media Section */
     #social-media .social-links {
-      max-width: 900px;
+      max-width: 800px;
       margin: 0 auto;
       display: flex;
       flex-wrap: wrap;
       justify-content: center;
-      gap: 1.6rem;
-      padding-top: 1rem;
-      opacity: 0;
-      transform: translateY(30px);
-      animation: fadeSlideUp 1s forwards 1.8s;
+      gap: 2rem;
+      padding-top: 2rem;
     }
     .social-link {
-      background: var(--color-bg);
-      border-radius: 50%;
-      box-shadow: var(--box-shadow);
-      width: 60px;
-      height: 60px;
+      background: var(--color-surface);
+      border-radius: 20px;
+      width: 80px;
+      height: 80px;
       display: flex;
       align-items: center;
       justify-content: center;
-      color: var(--color-accent);
-      font-size: 1.8rem;
-      transition: all 0.3s ease;
+      color: var(--pink-primary);
+      font-size: 2rem;
+      transition: var(--transition);
       user-select: none;
-      border: 1px solid var(--color-border);
+      border: 2px solid var(--color-surface-light);
+      position: relative;
+      overflow: hidden;
+      cursor: pointer;
     }
-    .social-link:hover, .social-link:focus-visible {
-      background: var(--color-accent);
-      color: var(--color-bg);
-      outline: none;
-      transform: translateY(-3px);
+    .social-link:hover {
+      background: var(--gradient-primary);
+      color: white;
+      box-shadow: var(--box-shadow);
+      transform: translateY(-5px) scale(1.1);
+    }
+    .social-link i {
+      position: relative;
+      z-index: 2;
     }
 
     /* Contact Section */
     #contact {
-      background: var(--color-bg);
-      color: var(--color-text-primary);
-      padding: 5rem 2rem;
-      font-weight: 300;
-      opacity: 0;
-      transform: translateY(30px);
-      animation: fadeSlideUp 1s forwards 2s;
+      background: var(--color-dark);
+      padding: 6rem 2rem;
+      position: relative;
+    }
+    #contact::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: var(--gradient-secondary);
+      opacity: 0.1;
+      pointer-events: none;
+      z-index: 0;
+    }
+    #contact .container {
+      position: relative;
+      z-index: 1;
     }
     #contact .contact-info {
-      max-width: 900px;
+      max-width: 1000px;
       margin: 0 auto 2rem;
       display: grid;
-      gap: 1.8rem;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 2rem;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
     }
     .contact-item {
-      background: #f8f9fa;
-      border: 1px solid var(--color-border);
+      background: var(--color-surface);
+      border: 1px solid var(--color-surface-light);
       border-radius: var(--border-radius);
-      padding: 1.5rem;
-      box-shadow: var(--box-shadow);
+      padding: 2rem;
       display: flex;
       align-items: center;
-      gap: 1rem;
+      gap: 1.5rem;
       cursor: default;
       user-select: none;
-      transition: background-color 0.3s ease;
-      min-height: 80px;
+      transition: var(--transition);
+      position: relative;
+      overflow: hidden;
     }
-    .contact-item:hover, .contact-item:focus-visible {
-      background: var(--color-accent-secondary);
+    .contact-item:hover {
+      transform: translateY(-5px);
+      box-shadow: var(--box-shadow);
+      background: var(--gradient-primary);
       color: white;
-      outline: none;
-      transform: translateY(-3px);
     }
     .contact-item i {
-      font-size: 1.7rem;
-      min-width: 45px;
+      font-size: 2rem;
+      color: var(--pink-primary);
+      min-width: 50px;
       text-align: center;
-      color: var(--color-accent);
       flex-shrink: 0;
+      transition: color 0.3s ease;
     }
     .contact-item:hover i {
       color: white;
     }
     .contact-item div {
-      display: flex;
-      flex-direction: column;
       flex: 1;
-      min-width: 0;
     }
     .contact-label {
       font-weight: 700;
-      font-size: 1.1rem;
-      margin-bottom: 0.3rem;
-      white-space: nowrap;
-      color: var(--color-accent);
+      font-size: 1.2rem;
+      margin-bottom: 0.5rem;
+      color: var(--color-light);
     }
     .contact-value {
       font-weight: 400;
-      font-size: 0.95rem;
-      opacity: 0.9;
+      font-size: 1rem;
+      color: var(--color-text-secondary);
       word-wrap: break-word;
       overflow-wrap: break-word;
+      transition: color 0.3s ease;
     }
     .contact-value a {
-      color: var(--color-text-primary);
+      color: var(--pink-primary);
       text-decoration: none;
+      transition: color 0.3s ease;
     }
     .contact-value a:hover {
-      color: var(--color-accent-secondary);
+      color: var(--color-light);
       text-decoration: underline;
     }
 
     /* Footer */
     footer {
       text-align: center;
-      background: var(--color-bg);
-      border-top: 1px solid var(--color-border);
+      background: var(--color-dark);
+      border-top: 1px solid var(--color-surface);
       color: var(--color-text-secondary);
-      padding: 2rem;
+      padding: 3rem 2rem;
       font-weight: 300;
     }
     footer a {
-      color: var(--color-accent);
+      color: var(--pink-primary);
       text-decoration: underline;
     }
 
-    /* Animations */
+    /* Keyframe Animations */
     @keyframes fadeSlideIn {
       to {
         opacity: 1;
@@ -566,62 +653,83 @@
     }
     @keyframes typing {
       from { width: 0 }
-      to { width: 22ch }
+      to { width: 32ch }
     }
     @keyframes blink-caret {
       50% { border-color: transparent }
     }
 
+    /* Scroll animation class */
+    .scroll-animate {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+    }
+    .scroll-animate.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
     /* Responsive */
-    @media (max-width: 768px) {
+    @media (max-width: 968px) {
       #about .about-content {
         grid-template-columns: 1fr;
         text-align: center;
+        gap: 3rem;
       }
       #about img.about-photo {
-        margin: 0 auto 2rem;
+        margin: 0 auto;
+        max-width: 250px;
       }
+    }
+
+    @media (max-width: 768px) {
       ul.nav-links {
         display: none;
       }
       .btn-group {
         flex-direction: column;
+        align-items: center;
       }
       #home h1 {
-        font-size: 2.2rem;
+        font-size: 2.5rem;
       }
       #home h2 {
-        font-size: 1.2rem;
+        font-size: 1.4rem;
       }
-      .contact-info {
-        grid-template-columns: 1fr;
+      h2.section-title {
+        font-size: 2.2rem;
       }
       .container {
-        padding: 1rem 1rem;
+        padding: 1rem;
+      }
+      .project-cards {
+        grid-template-columns: 1fr;
       }
     }
 
     @media (max-width: 480px) {
       #home h1 {
-        font-size: 1.8rem;
-      }
-      h2.section-title {
         font-size: 2rem;
       }
-      .contact-item {
-        padding: 1rem;
+      #home h2 {
+        font-size: 1.2rem;
       }
-      .contact-value {
-        font-size: 0.85rem;
+      h2.section-title {
+        font-size: 1.8rem;
+      }
+      .contact-item {
+        padding: 1.5rem;
       }
     }
   </style>
 </head>
 <body>
+
   <header>
     <nav class="container" aria-label="Primary navigation">
       <a href="#home" class="nav-logo" aria-label="Bhupendra Singh Kanyal Homepage">
-        <i class="fas fa-user-astronaut"></i> Bhupendra
+        <i class="fas fa-rocket"></i> Bhupendra
       </a>
       <ul class="nav-links">
         <li><a href="#home">Home</a></li>
@@ -634,244 +742,248 @@
     </nav>
   </header>
 
-  <!-- Hero -->
-  <section id="home" role="banner">
-    <img 
-      src="https://media.licdn.com/dms/image/v2/D5635AQExk5HjVHenKA/profile-framedphoto-shrink_400_400/B56Zk4O7ckHcAg-/0/1757585061947?e=1759050000&v=beta&t=3lc8py4BJpeLJ47bQT1Pqvyki8OCibG37uIM0nsGRV4" 
-      alt="Bhupendra Singh Kanyal Profile Photo" 
-      class="profile-pic"
-      loading="lazy"
-    />
-    <h1>Bhupendra Singh Kanyal</h1>
-    <h2>BBA in Entrepreneurship Student</h2>
-    <p class="bio">Designer, Developer & Entrepreneur in progress. Visionary with plans to establish BeBhupendra Trusts focusing on humanity, social causes & innovation.</p>
-    <div class="btn-group">
-      <a href="#portfolio" class="btn" aria-label="View My Projects"><i class="fas fa-briefcase"></i> My Projects</a>
-      <a href="#contact" class="btn secondary" aria-label="Contact Bhupendra"><i class="fas fa-envelope"></i> Contact Me</a>
-    </div>
-  </section>
+  <main>
 
-  <!-- About -->
-  <section id="about" aria-label="About Bhupendra">
-    <div class="container">
-      <h2 class="section-title">About Me</h2>
-      <p class="section-subtitle">Get to know more about my background, skills, and aspirations</p>
-      <div class="about-content">
-        <img src="https://media.licdn.com/dms/image/v2/D5635AQExk5HjVHenKA/profile-framedphoto-shrink_400_400/B56Zk4O7ckHcAg-/0/1757585061947?e=1759050000&v=beta&t=3lc8py4BJpeLJ47bQT1Pqvyki8OCibG37uIM0nsGRV4" alt="Bhupendra Singh Kanyal" class="about-photo" loading="lazy" />
-        <div class="text">
-          <p><strong>Date of Birth:</strong> 26 July 2007</p>
-          <p><strong>Current Occupation:</strong> Student (BBA in Entrepreneurship, 2025–Present)</p>
-          <p>Completed Class 12 Commerce with Accountancy, Business Studies, Economics, Hindi, English, and Physical Education.</p>
-          <p>I have a <strong>vision to establish BeBhupendra Trusts</strong> - an initiative focused on humanity, education, animal welfare, human rights, and social causes with a mission of spreading worship, faith, and universal kindness.</p>
-          <p>Passionate about business, creativity, and innovation. Skilled in graphic designing, development, and entrepreneurship.</p>
-          <p>Involved in Grand RP roleplay communities as a creative outlet while balancing traditional values with a forward-thinking Gen Z energy.</p>
-          <p>Currently managing independent college life — cooking, commuting, and personal growth using tech and creativity.</p>
-          <p>Poetic, honest, humble yet driven — values character, integrity, and strives to create value for people and society.</p>
-          
-          <h3 style="color: var(--color-accent); margin-top: 2rem; margin-bottom: 1rem;">Core Skills & Interests</h3>
-          <div class="skills-list" aria-label="Skills">
-            <span class="skill">Graphic Design</span>
-            <span class="skill">Basic Development</span>
-            <span class="skill">Entrepreneurship</span>
-            <span class="skill">Business Strategy</span>
-            <span class="skill">Financial Management</span>
-            <span class="skill">UI/UX Design</span>
-            <span class="skill">Social Media Growth</span>
-            <span class="skill">Creative Visuals</span>
+    <!-- Hero -->
+    <section id="home" role="banner" class="scroll-animate">
+      <div class="hero-content">
+        <img 
+          src="https://media.licdn.com/dms/image/v2/D5635AQExk5HjVHenKA/profile-framedphoto-shrink_400_400/B56Zk4O7ckHcAg-/0/1757585061947?e=1759050000&v=beta&t=3lc8py4BJpeLJ47bQT1Pqvyki8OCibG37uIM0nsGRV4" 
+          alt="Bhupendra Singh Kanyal Profile Photo" 
+          class="profile-pic"
+          loading="lazy"
+        />
+        <h1>Bhupendra Singh Kanyal</h1>
+        <h2>BBA in Entrepreneurship Student</h2>
+        <p class="bio">Designer, Developer & Entrepreneur in progress. Visionary with plans to establish BeBhupendra Trusts focusing on humanity, social causes & innovation.</p>
+        <div class="btn-group">
+          <a href="#portfolio" class="btn" aria-label="View My Projects"><i class="fas fa-briefcase"></i> My Projects</a>
+          <a href="#contact" class="btn secondary" aria-label="Contact Bhupendra"><i class="fas fa-envelope"></i> Contact Me</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- About -->
+    <section id="about" aria-label="About Bhupendra" class="scroll-animate">
+      <div class="container">
+        <h2 class="section-title">About Me</h2>
+        <p class="section-subtitle">Get to know more about my background, skills, and aspirations</p>
+        <div class="about-content">
+          <img src="https://media.licdn.com/dms/image/v2/D5635AQExk5HjVHenKA/profile-framedphoto-shrink_400_400/B56Zk4O7ckHcAg-/0/1757585061947?e=1759050000&v=beta&t=3lc8py4BJpeLJ47bQT1Pqvyki8OCibG37uIM0nsGRV4" alt="Bhupendra Singh Kanyal" class="about-photo" loading="lazy" />
+          <div class="text">
+            <p><strong>Date of Birth:</strong> 26 July 2007</p>
+            <p><strong>Current Occupation:</strong> Student (BBA in Entrepreneurship, 2025–Present)</p>
+            <p>Completed Class 12 Commerce with Accountancy, Business Studies, Economics, Hindi, English, and Physical Education.</p>
+            <p>I have a <strong>vision to establish BeBhupendra Trusts</strong> - an initiative focused on humanity, education, animal welfare, human rights, and social causes with a mission of spreading worship, faith, and universal kindness.</p>
+            <p>Passionate about business, creativity, and innovation. Skilled in graphic designing, development, and entrepreneurship.</p>
+            <p>Involved in Grand RP roleplay communities as a creative outlet while balancing traditional values with a forward-thinking Gen Z energy.</p>
+            <p>Currently managing independent college life — cooking, commuting, and personal growth using tech and creativity.</p>
+            <p>Poetic, honest, humble yet driven — values character, integrity, and strives to create value for people and society.</p>
+            
+            <h3 style="color: var(--pink-primary); margin-top: 2rem; margin-bottom: 1rem; font-size: 1.4rem;">Core Skills & Interests</h3>
+            <div class="skills-list" aria-label="Skills">
+              <span class="skill">Graphic Design</span>
+              <span class="skill">Basic Development</span>
+              <span class="skill">Entrepreneurship</span>
+              <span class="skill">Business Strategy</span>
+              <span class="skill">Financial Management</span>
+              <span class="skill">UI/UX Design</span>
+              <span class="skill">Social Media Growth</span>
+              <span class="skill">Creative Visuals</span>
+            </div>
           </div>
         </div>
       </div>
-    </div>
-  </section>
+    </section>
 
-  <!-- Projects -->
-  <section id="portfolio" aria-label="Bhupendra's Projects">
-    <div class="container">
-      <h2 class="section-title">My Projects</h2>
-      <p class="section-subtitle">Selected projects reflecting my journey and skills</p>
-      <div class="project-cards">
+    <!-- Projects -->
+    <section id="portfolio" aria-label="Bhupendra's Projects" class="scroll-animate">
+      <div class="container">
+        <h2 class="section-title">My Projects</h2>
+        <p class="section-subtitle">Selected projects reflecting my journey and skills</p>
+        <div class="project-cards">
 
-        <article class="project-card" tabindex="0" aria-label="BeBhupendra Trusts Vision">
-          <h3>BeBhupendra Trusts Vision</h3>
-          <p class="project-description">My vision to establish a trust supporting humanity, education, animal welfare, and human rights through social entrepreneurship and community engagement.</p>
-          <div class="project-tags">
-            <span class="project-tag">Vision</span>
-            <span class="project-tag">Social Causes</span>
-            <span class="project-tag">Future Plans</span>
-            <span class="project-tag">Leadership</span>
-          </div>
-        </article>
+          <article class="project-card scroll-animate" tabindex="0">
+            <h3>BeBhupendra Trusts Vision</h3>
+            <p class="project-description">My vision to establish a trust supporting humanity, education, animal welfare, and human rights through social entrepreneurship and community engagement.</p>
+            <div class="project-tags">
+              <span class="project-tag">Vision</span>
+              <span class="project-tag">Social Causes</span>
+              <span class="project-tag">Future Plans</span>
+              <span class="project-tag">Leadership</span>
+            </div>
+          </article>
 
-        <article class="project-card" tabindex="0" aria-label="Creative Redesigns project">
-          <h3>Creative Redesigns</h3>
-          <p class="project-description">Improved timetables, wallpapers, and server setups for clarity and aesthetic appeal across different platforms and digital spaces.</p>
-          <div class="project-tags">
-            <span class="project-tag">Graphic Design</span>
-            <span class="project-tag">UI Aesthetics</span>
-            <span class="project-tag">Visual Clarity</span>
-            <span class="project-tag">Optimization</span>
-          </div>
-        </article>
+          <article class="project-card scroll-animate" tabindex="0">
+            <h3>Creative Redesigns</h3>
+            <p class="project-description">Improved timetables, wallpapers, and server setups for clarity and aesthetic appeal across different platforms and digital spaces.</p>
+            <div class="project-tags">
+              <span class="project-tag">Graphic Design</span>
+              <span class="project-tag">UI Aesthetics</span>
+              <span class="project-tag">Visual Clarity</span>
+              <span class="project-tag">Optimization</span>
+            </div>
+          </article>
 
-        <article class="project-card" tabindex="0" aria-label="Grand RP Roleplay">
-          <h3>Grand RP Community Leadership</h3>
-          <p class="project-description">Managed and created structured roleplay family setups and community leadership for immersive virtual experiences and team coordination.</p>
-          <div class="project-tags">
-            <span class="project-tag">Community Leadership</span>
-            <span class="project-tag">Roleplay</span>
-            <span class="project-tag">Creative Coordination</span>
-            <span class="project-tag">Management</span>
-          </div>
-        </article>
+          <article class="project-card scroll-animate" tabindex="0">
+            <h3>Grand RP Community Leadership</h3>
+            <p class="project-description">Managed and created structured roleplay family setups and community leadership for immersive virtual experiences and team coordination.</p>
+            <div class="project-tags">
+              <span class="project-tag">Community Leadership</span>
+              <span class="project-tag">Roleplay</span>
+              <span class="project-tag">Creative Coordination</span>
+              <span class="project-tag">Management</span>
+            </div>
+          </article>
 
-      </div>  
-    </div>
-  </section>
-
-  <!-- Achievements -->
-  <section id="achievements" aria-label="Achievements and Certifications">
-    <div class="container">
-      <h2 class="section-title">Achievements & Certifications</h2>
-      <p class="section-subtitle">Milestones illustrating my growth and learning journey</p>
-      <div class="achievement-list">
-
-        <article class="achievement-card" tabindex="0">
-          <i class="fas fa-graduation-cap" aria-hidden="true"></i>
-          <h4 class="achievement-title">Enrolled in BBA Entrepreneurship</h4>
-          <p class="achievement-date">2025 – Present</p>
-          <p class="achievement-desc">Currently pursuing BBA degree focusing on entrepreneurship and business management.</p>
-        </article>
-
-        <article class="achievement-card" tabindex="0">
-          <i class="fab fa-github" aria-hidden="true"></i>
-          <h4 class="achievement-title">Active GitHub Profile</h4>
-          <p class="achievement-date">Since July 2025</p>
-          <p class="achievement-desc">Building a developer portfolio and publishing projects on GitHub platform.</p>
-        </article>
-
-        <article class="achievement-card" tabindex="0">
-          <i class="fas fa-globe" aria-hidden="true"></i>
-          <h4 class="achievement-title">Launched Portfolio Website</h4>
-          <p class="achievement-date">September 2025</p>
-          <p class="achievement-desc">Successfully deployed a professional portfolio website on GitHub Pages.</p>
-        </article>
-
-        <article class="achievement-card" tabindex="0">
-          <i class="fas fa-award" aria-hidden="true"></i>
-          <h4 class="achievement-title">Completed Multiple Certifications</h4>
-          <p class="achievement-date">2022–2023</p>
-          <p class="achievement-desc">Design Thinking, Google Generative AI, Business Analysis, Investment Risk Management.</p>
-        </article>
-
-        <article class="achievement-card" tabindex="0">
-          <i class="fas fa-users" aria-hidden="true"></i>
-          <h4 class="achievement-title">Campus Ambassador Internship</h4>
-          <p class="achievement-date">Apr 2022 - Jun 2022</p>
-          <p class="achievement-desc">Represented International Modal United States, building university community engagement.</p>
-        </article>
-
+        </div>  
       </div>
-    </div>
-  </section>
+    </section>
 
-  <!-- Social Media -->
-  <section id="social-media" aria-label="Social Media and Contact Links">
-    <div class="container">
-      <h2 class="section-title">Connect with Me</h2>
-      <p class="section-subtitle">Follow me and get updates on my work and journey</p>
-      <div class="social-links">
-        <a href="https://github.com/BeBhupendra" aria-label="GitHub profile" class="social-link" target="_blank" rel="noopener noreferrer"><i class="fab fa-github"></i></a>
-        <a href="https://in.linkedin.com/in/bebhupendra" aria-label="LinkedIn profile" class="social-link" target="_blank" rel="noopener noreferrer"><i class="fab fa-linkedin"></i></a>
-        <a href="https://twitter.com/be_bhupendra" aria-label="Twitter profile" class="social-link" target="_blank" rel="noopener noreferrer"><i class="fab fa-twitter"></i></a>
-        <a href="https://instagram.com/bebhupendra" aria-label="Instagram profile" class="social-link" target="_blank" rel="noopener noreferrer"><i class="fab fa-instagram"></i></a>
-        <a href="https://www.youtube.com/@BeBhupendra" aria-label="YouTube channel" class="social-link" target="_blank" rel="noopener noreferrer"><i class="fab fa-youtube"></i></a>
-        <a href="#" aria-label="Discord profile" class="social-link" title="Discord: bebhupendra"><i class="fab fa-discord"></i></a>
-        <a href="https://in.pinterest.com/bebhupendraoff" aria-label="Pinterest profile" class="social-link" target="_blank" rel="noopener noreferrer"><i class="fab fa-pinterest"></i></a>
+    <!-- Achievements -->
+    <section id="achievements" aria-label="Achievements and Certifications" class="scroll-animate">
+      <div class="container">
+        <h2 class="section-title">Achievements & Certifications</h2>
+        <p class="section-subtitle">Milestones illustrating my growth and learning journey</p>
+        <div class="achievement-list">
+
+          <article class="achievement-card scroll-animate" tabindex="0">
+            <i class="fas fa-graduation-cap" aria-hidden="true"></i>
+            <h4 class="achievement-title">Enrolled in BBA Entrepreneurship</h4>
+            <p class="achievement-date">2025 – Present</p>
+            <p class="achievement-desc">Currently pursuing BBA degree focusing on entrepreneurship and business management.</p>
+          </article>
+
+          <article class="achievement-card scroll-animate" tabindex="0">
+            <i class="fab fa-github" aria-hidden="true"></i>
+            <h4 class="achievement-title">Active GitHub Profile</h4>
+            <p class="achievement-date">Since July 2025</p>
+            <p class="achievement-desc">Building a developer portfolio and publishing projects on GitHub platform.</p>
+          </article>
+
+          <article class="achievement-card scroll-animate" tabindex="0">
+            <i class="fas fa-globe" aria-hidden="true"></i>
+            <h4 class="achievement-title">Launched Portfolio Website</h4>
+            <p class="achievement-date">September 2025</p>
+            <p class="achievement-desc">Successfully deployed a professional portfolio website on GitHub Pages.</p>
+          </article>
+
+          <article class="achievement-card scroll-animate" tabindex="0">
+            <i class="fas fa-award" aria-hidden="true"></i>
+            <h4 class="achievement-title">Completed Multiple Certifications</h4>
+            <p class="achievement-date">2022–2023</p>
+            <p class="achievement-desc">Design Thinking, Google Generative AI, Business Analysis, Investment Risk Management.</p>
+          </article>
+
+          <article class="achievement-card scroll-animate" tabindex="0">
+            <i class="fas fa-users" aria-hidden="true"></i>
+            <h4 class="achievement-title">Campus Ambassador Internship</h4>
+            <p class="achievement-date">Apr 2022 - Jun 2022</p>
+            <p class="achievement-desc">Represented International Modal United States, building university community engagement.</p>
+          </article>
+
+        </div>
       </div>
-    </div>
-  </section>
+    </section>
 
-  <!-- Contact Section -->
-  <section id="contact" aria-label="Contact Bhupendra Singh Kanyal">
-    <div class="container">
-      <h2 class="section-title">Get In Touch</h2>
-      <p class="section-subtitle">Feel free to contact me via email or social media</p>
-      <div class="contact-info">
-
-        <div class="contact-item" tabindex="0">
-          <i class="fas fa-envelope" aria-hidden="true"></i>
-          <div>
-            <span class="contact-label">Email</span>
-            <span class="contact-value"><a href="mailto:cont.bebhupendra@gmail.com">cont.bebhupendra@gmail.com</a></span>
-          </div>
+    <!-- Social Media -->
+    <section id="social-media" aria-label="Social Media and Contact Links" class="scroll-animate">
+      <div class="container">
+        <h2 class="section-title">Connect with Me</h2>
+        <p class="section-subtitle">Follow me and get updates on my work and journey</p>
+        <div class="social-links">
+          <a href="https://github.com/BeBhupendra" aria-label="GitHub profile" class="social-link" target="_blank" rel="noopener noreferrer"><i class="fab fa-github"></i></a>
+          <a href="https://in.linkedin.com/in/bebhupendra" aria-label="LinkedIn profile" class="social-link" target="_blank" rel="noopener noreferrer"><i class="fab fa-linkedin"></i></a>
+          <a href="https://twitter.com/be_bhupendra" aria-label="Twitter profile" class="social-link" target="_blank" rel="noopener noreferrer"><i class="fab fa-twitter"></i></a>
+          <a href="https://instagram.com/bebhupendra" aria-label="Instagram profile" class="social-link" target="_blank" rel="noopener noreferrer"><i class="fab fa-instagram"></i></a>
+          <a href="https://www.youtube.com/@BeBhupendra" aria-label="YouTube channel" class="social-link" target="_blank" rel="noopener noreferrer"><i class="fab fa-youtube"></i></a>
+          <a href="#" aria-label="Discord profile" class="social-link" title="Discord: bebhupendra"><i class="fab fa-discord"></i></a>
+          <a href="https://in.pinterest.com/bebhupendraoff" aria-label="Pinterest profile" class="social-link" target="_blank" rel="noopener noreferrer"><i class="fab fa-pinterest"></i></a>
         </div>
-
-        <div class="contact-item" tabindex="0">
-          <i class="fab fa-github" aria-hidden="true"></i>
-          <div>
-            <span class="contact-label">GitHub</span>
-            <span class="contact-value"><a href="https://github.com/BeBhupendra" target="_blank" rel="noopener noreferrer">BeBhupendra</a></span>
-          </div>
-        </div>
-
-        <div class="contact-item" tabindex="0">
-          <i class="fab fa-linkedin" aria-hidden="true"></i>
-          <div>
-            <span class="contact-label">LinkedIn</span>
-            <span class="contact-value"><a href="https://in.linkedin.com/in/bebhupendra" target="_blank" rel="noopener noreferrer">bebhupendra</a></span>
-          </div>
-        </div>
-
-        <div class="contact-item" tabindex="0">
-          <i class="fas fa-globe" aria-hidden="true"></i>
-          <div>
-            <span class="contact-label">Website</span>
-            <span class="contact-value"><a href="https://bebhupendra.me" target="_blank" rel="noopener noreferrer">bebhupendra.me</a></span>
-          </div>
-        </div>
-
-        <div class="contact-item" tabindex="0">
-          <i class="fas fa-info-circle" aria-hidden="true"></i>
-          <div>
-            <span class="contact-label">Status</span>
-            <span class="contact-value">Available for Collaboration</span>
-          </div>
-        </div>
-
       </div>
-    </div>
-  </section>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" aria-label="Contact Bhupendra Singh Kanyal" class="scroll-animate">
+      <div class="container">
+        <h2 class="section-title">Get In Touch</h2>
+        <p class="section-subtitle">Feel free to contact me via email or social media</p>
+        <div class="contact-info">
+
+          <div class="contact-item" tabindex="0">
+            <i class="fas fa-envelope" aria-hidden="true"></i>
+            <div>
+              <span class="contact-label">Email</span>
+              <span class="contact-value"><a href="mailto:cont.bebhupendra@gmail.com">cont.bebhupendra@gmail.com</a></span>
+            </div>
+          </div>
+
+          <div class="contact-item" tabindex="0">
+            <i class="fab fa-github" aria-hidden="true"></i>
+            <div>
+              <span class="contact-label">GitHub</span>
+              <span class="contact-value"><a href="https://github.com/BeBhupendra" target="_blank" rel="noopener noreferrer">BeBhupendra</a></span>
+            </div>
+          </div>
+
+          <div class="contact-item" tabindex="0">
+            <i class="fab fa-linkedin" aria-hidden="true"></i>
+            <div>
+              <span class="contact-label">LinkedIn</span>
+              <span class="contact-value"><a href="https://in.linkedin.com/in/bebhupendra" target="_blank" rel="noopener noreferrer">bebhupendra</a></span>
+            </div>
+          </div>
+
+          <div class="contact-item" tabindex="0">
+            <i class="fas fa-globe" aria-hidden="true"></i>
+            <div>
+              <span class="contact-label">Website</span>
+              <span class="contact-value"><a href="https://bebhupendra.me" target="_blank" rel="noopener noreferrer">bebhupendra.me</a></span>
+            </div>
+          </div>
+
+          <div class="contact-item" tabindex="0">
+            <i class="fas fa-info-circle" aria-hidden="true"></i>
+            <div>
+              <span class="contact-label">Status</span>
+              <span class="contact-value">Available for Collaboration</span>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+  </main>
 
   <footer>
-    <p>&copy; 2025 Bhupendra Singh Kanyal. All rights reserved.</p>
-    <p>Made with ❤️ by BeBhupendra</p>
+    <p>&copy; 2025 BeBhupendra . All rights reserved.</p>
+    <p>Made with ❤️ By Bhupendra Singh Kanyal</p>
   </footer>
 
-  <!-- Animations triggered on scroll -->
+  <!-- Scroll-triggered animation script -->
   <script>
-    const faders = document.querySelectorAll('section, .project-card, .achievement-card, .social-link');
+    document.addEventListener('DOMContentLoaded', () => {
+      const observerOptions = {
+        root: null,
+        rootMargin: '0px 0px -100px 0px',
+        threshold: 0
+      };
 
-    const appearOptions = {
-      threshold: 0,
-      rootMargin: "0px 0px -100px 0px"
-    };
+      const revealOnScroll = new IntersectionObserver((entries, observer) => {
+        entries.forEach(entry => {
+          if(entry.isIntersecting){
+            entry.target.classList.add('visible');
+            observer.unobserve(entry.target);
+          }
+        });
+      }, observerOptions);
 
-    const appearOnScroll = new IntersectionObserver(function(entries, appearOnScroll) {
-      entries.forEach(entry => {
-        if(!entry.isIntersecting) {
-          return;
-        } else {
-          entry.target.style.opacity = '1';
-          entry.target.style.transform = 'translateY(0)';
-          entry.target.style.animationPlayState = 'running';
-          appearOnScroll.unobserve(entry.target);
-        }
+      document.querySelectorAll('.scroll-animate').forEach(elem => {
+        revealOnScroll.observe(elem);
       });
-    }, appearOptions);
-
-    faders.forEach(fader => {
-      appearOnScroll.observe(fader);
     });
   </script>
+
 </body>
 </html>
